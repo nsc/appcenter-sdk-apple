@@ -87,9 +87,9 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target,
     returnValue = [[MSAC_Reachability alloc] init];
     if (returnValue != NULL) {
       returnValue.reachabilityRef = reachability;
-    } else {
-      CFRelease(reachability);
     }
+    
+    CFRelease(reachability);
   }
   return returnValue;
 }
@@ -104,9 +104,9 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target,
     returnValue = [[MSAC_Reachability alloc] init];
     if (returnValue != NULL) {
       returnValue.reachabilityRef = reachability;
-    } else {
-      CFRelease(reachability);
     }
+
+    CFRelease(reachability);
   }
   return returnValue;
 }
@@ -118,6 +118,19 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target,
   zeroAddress.sin_family = AF_INET;
 
   return [self reachabilityWithAddress:(const struct sockaddr *)&zeroAddress];
+}
+
+- (void)setReachabilityRef:(SCNetworkReachabilityRef)reachabilityRef
+{
+    if (reachabilityRef != NULL) {
+        CFRetain(reachabilityRef);
+    }
+    
+    if (_reachabilityRef != NULL) {
+        CFRelease(_reachabilityRef);
+    }
+    
+    _reachabilityRef = reachabilityRef;
 }
 
 #pragma mark - Start and stop notifier
